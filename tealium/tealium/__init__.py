@@ -1,3 +1,7 @@
+'''
+    Python libary that utilizes Tealium Collect
+    pydoc -w documentation
+'''
 import requests
 import uuid
 import urllib
