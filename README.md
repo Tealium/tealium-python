@@ -9,7 +9,7 @@ The Tealium AudienceStream™ Influence DMP (data management platform) enables y
 ## How To Get Started
 
 * Check out the [Getting Started](https://community.tealiumiq.com/t5/Mobile-Libraries/Mobile-140-Getting-Started-With-Python/ta-p/12496) guide for a step by step walkthough of adding Tealium to an extisting project.  
-* The public API can viewed online [here](https://github.com/Tealium/tealium-python), it is also provided in the Documentation directory
+* The public API can viewed online [here](tealium.github.io/tealium-python), it is also provided in the Documentation directory
 * There are many other useful articles on our [community site](https://community.tealiumiq.com).
 
 ## Contact Us
