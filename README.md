@@ -1,6 +1,8 @@
-# Tealium Mobile Library for iOS Version 1.0
+# Tealium Library for Python Version 1.0
 
 This mobile library leverages the power of Tealium's [AudienceStream™](http://tealium.com/products/audiencestream/) making them natively available to Python applications.
+
+Please contact your Account Manager first to verify yours agreement(s) for licensed products.
 
 ### What is Audience Stream ?
 
@@ -8,8 +10,8 @@ The Tealium AudienceStream™ Influence DMP (data management platform) enables y
 
 ## How To Get Started
 
-* Check out the [Getting Started](https://community.tealiumiq.com/t5/Mobile-Libraries/Mobile-140-Getting-Started-With-Python/ta-p/12496/message-revision/12496%3A2) guide for a step by step walkthough of adding Tealium to an extisting project.  
-* The public API can viewed online [here](https://github.com/Tealium/tealium-python), it is also provided in the Documentation directory
+* Check out the [Getting Started](https://community.tealiumiq.com/t5/Mobile-Libraries/Mobile-140-Getting-Started-With-Python/ta-p/12496/message-revision/12496%3A2) guide for a step by step walkthrough of adding Tealium to an existing project.  
+* The public API can viewed online [here](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Python-APIs/ta-p/14699), it is also provided in the Documentation directory
 * There are many other useful articles on our [community site](https://community.tealiumiq.com).
 
 ## Contact Us
