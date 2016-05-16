@@ -1,4 +1,4 @@
-# Tealium Mobile Library for iOS Version 1.0
+# Tealium Library for Python Version 1.0
 
 This mobile library leverages the power of Tealium's [AudienceStream™](http://tealium.com/products/audiencestream/) making them natively available to Python applications.
 
