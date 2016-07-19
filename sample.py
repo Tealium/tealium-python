@@ -10,6 +10,5 @@
 from tealium import Tealium
 
 t = Tealium('tealiummobile', 'demo', 'dev')
-d = {'tealium_anything': 'value3'}
-t.resetSessionId()
+d = {'testkey': 'testvalue'}
 t.trackEvent('title', d)
