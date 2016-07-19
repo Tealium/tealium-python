@@ -2,14 +2,16 @@
 
 This mobile library leverages the power of Tealium's [AudienceStream™](http://tealium.com/products/audiencestream/) making them natively available to Python applications.
 
+Please contact your Account Manager first to verify yours agreement(s) for licensed products.
+
 ### What is Audience Stream ?
 
 The Tealium AudienceStream™ Influence DMP (data management platform) enables you to build a universal 360-degree customer profile to better influence and engage visitors in your web or mobile channels in real time. AudienceStream leverages the richest source of real-time, first-party data to help you deliver more relevant and timely interactions, thereby improving loyalty and conversions and creating new opportunities for growth.
 
 ## How To Get Started
 
-* Check out the [Getting Started](https://community.tealiumiq.com/t5/Mobile-Libraries/Mobile-140-Getting-Started-With-Python/ta-p/12496) guide for a step by step walkthough of adding Tealium to an extisting project.  
-* The public API can viewed online [here](http://tealium.github.io/tealium-python/), it is also provided in the Documentation directory
+* Check out the [Getting Started](https://community.tealiumiq.com/t5/Mobile-Libraries/Mobile-140-Getting-Started-With-Python/ta-p/12496/message-revision/12496%3A2) guide for a step by step walkthrough of adding Tealium to an existing project.  
+* The public API can viewed online [here](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Python-APIs/ta-p/14699), it is also provided in the Documentation directory
 * There are many other useful articles on our [community site](https://community.tealiumiq.com).
 
 ## Contact Us
