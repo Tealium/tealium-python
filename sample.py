@@ -9,6 +9,14 @@
 
 from tealium import Tealium
 
+
+def tealiumCallback(info, success, error=None):
+    if error is not None:
+        print (info, success, error)
+        return
+    print (info, success)
+
 t = Tealium('tealiummobile', 'demo', 'dev')
 d = {'testkey': 'testvalue'}
+t.trackEvent('title', Tealium.EVENT_TYPE_VIEW, d, tealiumCallback)
 t.trackEvent('title', d)

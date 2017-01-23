@@ -16,6 +16,12 @@ class Tealium(object):
     '''
         Base class for the libary.
     '''
+    EVENT_TYPE_CONVERSION = "conversion"
+    EVENT_TYPE_DERIVED = "derived"
+    EVENT_TYPE_ACTIVITY = "activity"
+    EVENT_TYPE_VIEW = "view"
+    EVENT_TYPE_INTERACTION = "interaction"
+
     sessionId = ""
     platformversion = ""
     if sys.version_info[:3] >= (3, 0):
@@ -24,7 +30,7 @@ class Tealium(object):
         platformversion = 2.7
 
     T_BASE_URL = 'https://collect.tealiumiq.com/vdata/i.gif?tealium_library_' \
-                 'name=python&tealium_library_version=1.0.0&platform_name=' \
+                 'name=python&tealium_library_version=1.1.0&platform_name=' \
                  'python&platform_version={}&'.format(platformversion)
 
     '''
@@ -86,7 +92,7 @@ class Tealium(object):
 
         FINAL_BASE_URL = '{}tealium_account={}&tealium_profile={}&tealium_' \
                          'environment={}&tealium_vid={}&tealium_timestamp_' \
-                         'epoch={}tealium_session_id={}tealium_visitor_' \
+                         'epoch={}tealium_session_id={}&tealium_visitor_' \
                          'id={}'.format(self.T_BASE_URL, self.account,
                                         self.profile, self.environment,
                                         self.uuid, self.generateTimeStamp(),
@@ -99,8 +105,7 @@ class Tealium(object):
             statusResult = False
         return statusResult
 
-    def trackEvent(self, title, data=None):
-
+    def trackEvent(self, title, eventType=None, data=None, tealiumCallback=None):
         '''
             Call with a title and optional dictionary to track an event in
             stream.
@@ -108,31 +113,69 @@ class Tealium(object):
         Args:
             Title (String): A title for the event being tracked.
 
+            EventType(String): (Tealium.EVENT_TYPE_CONVERSION,
+                                    Tealium.EVENT_TYPE_DERIVED,
+                                    Tealium.EVENT_TYPE_ACTIVITY,
+                                    Tealium.EVENT_TYPE_VIEW,
+                                    Tealium.EVENT_TYPE_INTERACTION )
+
             Data (optional dictionary): Add any additional data sources for the
-            corresponding event.
+                    corresponding event.
+
+            Callback(optional callback):
+                Args:
+                    Info : Optional dictionary of data from call (i.e.
+                        response headers, encoded Url String etc.)
+                    Success: Whether completion succeeded or encountered
+                        a failure.
+                    Error: Error encounter, if any.
         '''
         randomNumber = self.generateRandomNumber()
+        if eventType is None:
+            eventType = self.EVENT_TYPE_ACTIVITY
+
         TRACK_URL = '{}tealium_account={}&tealium_profile={}&tealium_'\
                     'environment={}&tealium_vid={}&tealium_random='\
                     '{}&event_name={}&tealium_timestamp_epoch={}' \
                     '&tealium_session_id={}&tealium_'\
-                    'visitor_id={}'.format(self.T_BASE_URL, self.account,
-                                           self.profile, self.environment,
-                                           self.uuid, randomNumber, title,
-                                           self.generateTimeStamp(), sessionId,
-                                           self.uuid)
+                    'visitor_id={}&tealium_event={}&'\
+                    'tealium_event_type={}'.format(self.T_BASE_URL,
+                                                   self.account,
+                                                   self.profile,
+                                                   self.environment,
+                                                   self.uuid,
+                                                   randomNumber,
+                                                   title,
+                                                   self.generateTimeStamp(),
+                                                   sessionId,
+                                                   self.uuid,
+                                                   title,
+                                                   eventType)
         if data is not None:
             for key in data:
-                if sys.version_info[:3] >= (3, 0):
+                if self.platformversion >= 3:
                     TRACK_URL += '&' + urllib.parse.quote(str(key), safe='') \
-                                 + '=' + urllib.parse.quote(str(data[key]),
-                                                            safe='')
+                        + '=' + urllib.parse.quote(str(data[key]),
+                                                   safe='')
                 else:
                     TRACK_URL += '&' + urllib.quote(str(key), safe='') \
-                                 + '=' + urllib.quote(str(data[key]), safe='')
+                        + '=' + urllib.quote(str(data[key]), safe='')
         r = requests.get(TRACK_URL)
-        if r.status_code == 200:
-            statusResult = True
-        else:
-            statusResult = False
-        return statusResult
+
+        if tealiumCallback is None:
+            return
+
+        infoDict = {"encoded-url": TRACK_URL}
+        error = r.raise_for_status()
+
+        if r.status_code != 200:
+            tealiumCallback(infoDict, False, error)
+            return
+
+        infoDict["response_headers"] = r.headers
+
+        if 'X-error' in r.headers:
+            tealiumCallback(infoDict, False, error)
+            return
+
+        tealiumCallback(infoDict, True)
