@@ -12,9 +12,8 @@ AudienceStream allows you to create a unified view of your customers, correlatin
 
 ## How To Get Started
 
-* Check out the [Getting Started](https://community.tealiumiq.com/t5/Mobile-Libraries/Mobile-140-Getting-Started-With-Python/ta-p/12496) guide for a step by step walkthrough of adding Tealium to an existing project.  
-* The public API can viewed online [here](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Python-APIs/ta-p/14699), it is also provided in the Documentation directory
-* There are many other useful articles on our [community site](https://community.tealiumiq.com).
+* Check out the [Getting Started](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-for-Python/ta-p/12496) guide for a step by step walkthrough of adding Tealium to an existing project.  
+* There are many other useful articles at the [Tealium Learning Community](https://community.tealiumiq.com/).
 
 ## Contact Us
 
