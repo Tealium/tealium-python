@@ -18,5 +18,8 @@ def tealiumCallback(info, success, error=None):
 
 t = Tealium('tealiummobile', 'demo', 'dev')
 d = {'testkey': 'testvalue'}
-t.trackEvent('title', Tealium.EVENT_TYPE_VIEW, d, tealiumCallback)
-t.trackEvent('title', d)
+t.trackEvent("title")
+t.trackEvent("title",
+             data=d,
+             eventtype=Tealium.EVENT_TYPE_VIEW,
+             callback=tealiumCallback)

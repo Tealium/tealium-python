@@ -1,4 +1,4 @@
-# Tealium Library for Python 
+# Tealium Library for Python
 
 This mobile library leverages the power of Tealium's [AudienceStream™](http://tealium.com/products/audiencestream/) making them natively available to Python applications.
 
@@ -24,10 +24,13 @@ AudienceStream allows you to create a unified view of your customers, correlatin
 
 ## Change Log
 
-- 1.0.0 Initial Release
-- Multiple instance support
-- TrackEvent Support
+- 1.1.1  Bug Fix
+   - Update track call to take named arguments
 
+- 1.1.0
+   - TrackEvent Support
+   - Additional automatic data sources added to track call
+- 1.0.0 Initial Release
 
 ## License
 
@@ -35,4 +38,4 @@ Use of this software is subject to the terms and conditions of the license agree
 
 
 ---
-Copyright (C) 2012-2016, Tealium Inc.
+Copyright (C) 2012-2017, Tealium Inc.

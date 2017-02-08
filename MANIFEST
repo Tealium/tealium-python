@@ -2,4 +2,3 @@
 setup.cfg
 setup.py
 tealium/__init__.py
-tealium/unittests.py
