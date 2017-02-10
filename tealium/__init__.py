@@ -16,11 +16,20 @@ class Tealium(object):
     '''
         Base class for the libary.
     '''
+    EVENT_TYPE_ACTIVITY = "activity"
     EVENT_TYPE_CONVERSION = "conversion"
     EVENT_TYPE_DERIVED = "derived"
-    EVENT_TYPE_ACTIVITY = "activity"
-    EVENT_TYPE_VIEW = "view"
     EVENT_TYPE_INTERACTION = "interaction"
+    EVENT_TYPE_VIEW = "view"
+
+
+# argument labels for track call.
+    TRACK_EVENT_TYPE = "eventType"
+    TRACK_CALLBACK = "tealiumCallback"
+    TRACK_DATA = "data"
+    TRACK_TITLE = "title"
+
+    LIBRARY_VERSION = "1.1.1"
 
     sessionId = ""
     platformversion = ""
@@ -30,8 +39,9 @@ class Tealium(object):
         platformversion = 2.7
 
     T_BASE_URL = 'https://collect.tealiumiq.com/vdata/i.gif?tealium_library_' \
-                 'name=python&tealium_library_version=1.1.0&platform_name=' \
-                 'python&platform_version={}&'.format(platformversion)
+                 'name=python&tealium_library_version={}&platform_name=' \
+                 'python&platform_version={}&'.format(LIBRARY_VERSION,
+                                                      platformversion)
 
     '''
         Returns an instance of a Tealium object, path is optional.
@@ -75,6 +85,14 @@ class Tealium(object):
             afile.close()
         return UUID
 
+    def isValidEventType(self, eventType):
+        eventTypeArray = [self.EVENT_TYPE_VIEW,
+                          self.EVENT_TYPE_DERIVED,
+                          self.EVENT_TYPE_ACTIVITY,
+                          self.EVENT_TYPE_CONVERSION,
+                          self.EVENT_TYPE_INTERACTION]
+        return (eventType in eventTypeArray)
+
     def resetSessionId(self):
         '''
             Used to reset tealium_session_id as a data source.
@@ -105,7 +123,8 @@ class Tealium(object):
             statusResult = False
         return statusResult
 
-    def trackEvent(self, title, eventType=None, data=None, tealiumCallback=None):
+    def trackEvent(self, title, eventtype=None, data={}, callback=None):
+
         '''
             Call with a title and optional dictionary to track an event in
             stream.
@@ -113,7 +132,7 @@ class Tealium(object):
         Args:
             Title (String): A title for the event being tracked.
 
-            EventType(String): (Tealium.EVENT_TYPE_CONVERSION,
+            EventType(optional String): (Tealium.EVENT_TYPE_CONVERSION,
                                     Tealium.EVENT_TYPE_DERIVED,
                                     Tealium.EVENT_TYPE_ACTIVITY,
                                     Tealium.EVENT_TYPE_VIEW,
@@ -130,9 +149,13 @@ class Tealium(object):
                         a failure.
                     Error: Error encounter, if any.
         '''
-        randomNumber = self.generateRandomNumber()
-        if eventType is None:
+
+        if (eventtype is not None and self.isValidEventType):
+            eventType = eventtype
+        else:
             eventType = self.EVENT_TYPE_ACTIVITY
+
+        randomNumber = self.generateRandomNumber()
 
         TRACK_URL = '{}tealium_account={}&tealium_profile={}&tealium_'\
                     'environment={}&tealium_vid={}&tealium_random='\
@@ -162,20 +185,19 @@ class Tealium(object):
                         + '=' + urllib.quote(str(data[key]), safe='')
         r = requests.get(TRACK_URL)
 
-        if tealiumCallback is None:
+        if callback is None:
             return
-
         infoDict = {"encoded-url": TRACK_URL}
         error = r.raise_for_status()
 
         if r.status_code != 200:
-            tealiumCallback(infoDict, False, error)
+            callback(infoDict, False, error)
             return
 
         infoDict["response_headers"] = r.headers
 
         if 'X-error' in r.headers:
-            tealiumCallback(infoDict, False, error)
+            callback(infoDict, False, error)
             return
 
-        tealiumCallback(infoDict, True)
+        callback(infoDict, True)

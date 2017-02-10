@@ -7,6 +7,7 @@ class TestTrackCalls(unittest.TestCase):
     def test_enableCollect(self):
         t = Tealium.enable(Tealium('tealiummobile', 'demo', 'dev'))
         self.assertNotEqual(200, t, 'status result {} is unexpected'.format(t))
+        t = None
 
     def tealiumCallback(self, info, success, error=None):
         self.assertTrue(success, info)
@@ -34,7 +35,10 @@ class TestTrackCalls(unittest.TestCase):
     def test_trackEvent(self):
         t = Tealium('tealiummobile', 'demo', 'dev')
         d = {"foo": "bar"}
-        t.trackEvent('title', t.EVENT_TYPE_VIEW, d, self.tealiumCallback)
+        t.trackEvent("test",
+                     data=d,
+                     eventtype=Tealium.EVENT_TYPE_VIEW,
+                     callback=self.tealiumCallback)
         t = None
 
     def test_randomNumber(self):
@@ -47,6 +51,7 @@ class TestTrackCalls(unittest.TestCase):
                                              'occuring'
                                              .format(s))
             numberArray.append(s)
+        t = None
 
     def testUUID(self):
         t = Tealium('tealiummobile', 'demo', 'dev')
