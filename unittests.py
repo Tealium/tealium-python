@@ -4,11 +4,6 @@ from tealium import Tealium
 
 class TestTrackCalls(unittest.TestCase):
 
-    def test_enableCollect(self):
-        t = Tealium.enable(Tealium('tealiummobile', 'demo', 'dev'))
-        self.assertNotEqual(200, t, 'status result {} is unexpected'.format(t))
-        t = None
-
     def tealiumCallback(self, info, success, error=None):
         self.assertTrue(success, info)
         self.assertIsNone(error, info)
@@ -19,6 +14,7 @@ class TestTrackCalls(unittest.TestCase):
                                   "tealium_account",
                                   "tealium_profile",
                                   "tealium_environment",
+                                  "tealium_datasource",
                                   "tealium_random",
                                   "event_name",
                                   "tealium_timestamp_epoch",
@@ -29,12 +25,12 @@ class TestTrackCalls(unittest.TestCase):
 
         sentURL = info['encoded-url']
         for i in expectedDataSourceKeys:
-            self.assertIn(i, sentURL, 'expected key {} not in sent '
+            self.assertIn(i + '=', sentURL, 'expected key {} not in sent '
                                       'url {}'.format(i, sentURL))
 
     def test_trackEvent(self):
-        t = Tealium('tealiummobile', 'demo', 'dev')
-        d = {"foo": "bar"}
+        t = Tealium('tealiummobile', 'demo', 'dev', datasource='unittest')
+        d = {"foo": "bar", "tealium_visitor_id": "1234567890"}
         t.trackEvent("test",
                      data=d,
                      eventtype=Tealium.EVENT_TYPE_VIEW,
@@ -42,7 +38,7 @@ class TestTrackCalls(unittest.TestCase):
         t = None
 
     def test_randomNumber(self):
-        t = Tealium('tealiummobile', 'demo', 'dev')
+        t = Tealium('tealiummobile', 'demo', 'dev', datasource='unittest')
         numberArray = []
         for i in range(1000):
             s = t.generateRandomNumber()
@@ -54,7 +50,7 @@ class TestTrackCalls(unittest.TestCase):
         t = None
 
     def testUUID(self):
-        t = Tealium('tealiummobile', 'demo', 'dev')
+        t = Tealium('tealiummobile', 'demo', 'dev', datasource='unittest')
         uuid = t.getUUIDandSave()
         self.assertEqual(uuid, t.uuid, '{} is not expected {}'.format(uuid,
                                                                       t.uuid))

@@ -1,6 +1,6 @@
 # Tealium Library for Python
 
-This mobile library leverages the power of Tealium's [AudienceStream™](http://tealium.com/products/audiencestream/) making them natively available to Python applications.
+This mobile library leverages the power of Tealium's [AudienceStream™](http://tealium.com/products/audiencestream/) making it natively available to Python applications.
 
 Please contact your Account Manager first to verify yours agreement(s) for licensed products.
 
@@ -21,14 +21,23 @@ AudienceStream allows you to create a unified view of your customers, correlatin
 * If you have **general questions** or want to network with other users please visit the [Tealium Learning Community](https://community.tealiumiq.com)
 * If you have **account specific questions** please contact your Tealium account manager
 
+## Deprecations
+
+- "event_name" variable is replaced by "tealium_event". Both are sent for now.
+
 ## Change Log
 
-- 1.1.1  Bug Fix
+- 1.2.0 Support for UDH "datasource" id
+   - Add "datasource" as optional argument to constructor
+   - Make "environment" optional. It's no longer required, but won't break to use.
+
+- 1.1.1 Bug Fix
    - Update track call to take named arguments
 
 - 1.1.0
    - TrackEvent Support
    - Additional automatic data sources added to track call
+
 - 1.0.0 Initial Release
 
 ## License

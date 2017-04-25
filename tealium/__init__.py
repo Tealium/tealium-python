@@ -29,7 +29,7 @@ class Tealium(object):
     TRACK_DATA = "data"
     TRACK_TITLE = "title"
 
-    LIBRARY_VERSION = "1.1.1"
+    LIBRARY_VERSION = "1.2.0"
 
     sessionId = ""
     platformversion = ""
@@ -45,16 +45,18 @@ class Tealium(object):
 
     '''
         Returns an instance of a Tealium object, path is optional.
+
+        "path" is used for persistence
     '''
 
-    def __init__(self, account, profile, environment, path=None):
+    def __init__(self, account, profile, environment=None, path=None, datasource=None):
         self.account = account
         self.profile = profile
+        self.datasource = datasource
         self.path = path
         self.uuid = self.getUUIDandSave()
         self.sessionId = self.resetSessionId()
         self.environment = environment
-        self.enable()
 
     def generateRandomNumber(self):
 
@@ -65,7 +67,7 @@ class Tealium(object):
 
     def generateTimeStamp(self):
 
-        return time.time()
+        return int(time.time())
 
     def getUUIDandSave(self):
         '''
@@ -77,7 +79,7 @@ class Tealium(object):
         if not os.path.exists(self.path):
             path = open(self.path, 'wb')
             UUID = str(uuid.uuid1()).replace("-", "")
-            pickle.dump(UUID, path)
+            pickle.dump(UUID, path, protocol=2)
             path.close()
         else:
             afile = open(self.path, 'rb')
@@ -101,27 +103,6 @@ class Tealium(object):
         global sessionId
         sessionId = int(round(time.time() * 1000))
         return sessionId
-
-    def enable(self):
-        '''
-            Builds and calls the inital http request to Tealium Collect with
-            provided profile and account name
-        '''
-
-        FINAL_BASE_URL = '{}tealium_account={}&tealium_profile={}&tealium_' \
-                         'environment={}&tealium_vid={}&tealium_timestamp_' \
-                         'epoch={}tealium_session_id={}&tealium_visitor_' \
-                         'id={}'.format(self.T_BASE_URL, self.account,
-                                        self.profile, self.environment,
-                                        self.uuid, self.generateTimeStamp(),
-                                        sessionId, self.uuid)
-        r = requests.get(FINAL_BASE_URL)
-        if r.status_code == 200:
-            statusResult = True
-        else:
-            print('fail')
-            statusResult = False
-        return statusResult
 
     def trackEvent(self, title, eventtype=None, data={}, callback=None):
 
@@ -157,15 +138,18 @@ class Tealium(object):
 
         randomNumber = self.generateRandomNumber()
 
-        TRACK_URL = '{}tealium_account={}&tealium_profile={}&tealium_'\
-                    'environment={}&tealium_vid={}&tealium_random='\
+        TRACK_URL = '{}tealium_account={}&tealium_profile={}{}{}'\
+                    '&tealium_vid={}&tealium_random='\
                     '{}&event_name={}&tealium_timestamp_epoch={}' \
                     '&tealium_session_id={}&tealium_'\
                     'visitor_id={}&tealium_event={}&'\
                     'tealium_event_type={}'.format(self.T_BASE_URL,
                                                    self.account,
                                                    self.profile,
-                                                   self.environment,
+                                                   '' if self.environment is None else
+                                                       '&tealium_environment={}'.format(self.environment),
+                                                   '' if self.datasource is None else
+                                                       '&tealium_datasource={}'.format(self.datasource),
                                                    self.uuid,
                                                    randomNumber,
                                                    title,
@@ -174,6 +158,7 @@ class Tealium(object):
                                                    self.uuid,
                                                    title,
                                                    eventType)
+
         if data is not None:
             for key in data:
                 if self.platformversion >= 3:
