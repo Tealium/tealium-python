@@ -29,7 +29,7 @@ class Tealium(object):
     TRACK_DATA = "data"
     TRACK_TITLE = "title"
 
-    LIBRARY_VERSION = "1.2.0"
+    LIBRARY_VERSION = "1.3.0"
 
     sessionId = ""
     platformversion = ""
@@ -38,7 +38,7 @@ class Tealium(object):
     else:
         platformversion = 2.7
 
-    T_BASE_URL = 'https://collect.tealiumiq.com/vdata/i.gif?tealium_library_' \
+    T_BASE_URL = 'https://collect.tealiumiq.com/event?tealium_library_' \
                  'name=python&tealium_library_version={}&platform_name=' \
                  'python&platform_version={}&'.format(LIBRARY_VERSION,
                                                       platformversion)

@@ -56,5 +56,10 @@ class TestTrackCalls(unittest.TestCase):
                                                                       t.uuid))
         t = None
 
+    def testEventEndpoint(self):
+        t = Tealium('tealiummobile', 'demo', 'dev', datasource='unittest')
+        self.assertTrue(t.T_BASE_URL.startswith('https://collect.tealiumiq.com/event?'))
+        t = None
+
 if __name__ == '__main__':
     unittest.main()
