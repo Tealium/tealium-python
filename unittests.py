@@ -23,10 +23,9 @@ class TestTrackCalls(unittest.TestCase):
                                   "tealium_event",
                                   "tealium_event_type"]
 
-        sentURL = info['encoded-url']
+        sentData = info['request-data']
         for i in expectedDataSourceKeys:
-            self.assertIn(i + '=', sentURL, 'expected key {} not in sent '
-                                      'url {}'.format(i, sentURL))
+            self.assertIn(i, sentData, 'expected key {} not in sent data')
 
     def test_trackEvent(self):
         t = Tealium('tealiummobile', 'demo', 'dev', datasource='unittest')
@@ -58,7 +57,7 @@ class TestTrackCalls(unittest.TestCase):
 
     def testEventEndpoint(self):
         t = Tealium('tealiummobile', 'demo', 'dev', datasource='unittest')
-        self.assertTrue(t.T_BASE_URL.startswith('https://collect.tealiumiq.com/event?'))
+        self.assertTrue(t.T_BASE_URL.startswith('https://collect.tealiumiq.com/event'))
         t = None
 
 if __name__ == '__main__':
