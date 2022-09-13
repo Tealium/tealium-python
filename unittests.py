@@ -18,8 +18,6 @@ class TestTrackCalls(unittest.TestCase):
                                   "tealium_random",
                                   "event_name",
                                   "tealium_timestamp_epoch",
-                                  "tealium_session_id",
-                                  "tealium_visitor_id",
                                   "tealium_event",
                                   "tealium_event_type"]
 
@@ -46,13 +44,6 @@ class TestTrackCalls(unittest.TestCase):
                                              'occuring'
                                              .format(s))
             numberArray.append(s)
-        t = None
-
-    def testUUID(self):
-        t = Tealium('tealiummobile', 'demo', 'dev', datasource='unittest')
-        uuid = t.getUUIDandSave()
-        self.assertEqual(uuid, t.uuid, '{} is not expected {}'.format(uuid,
-                                                                      t.uuid))
         t = None
 
     def testEventEndpoint(self):

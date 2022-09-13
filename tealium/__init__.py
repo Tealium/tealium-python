@@ -2,15 +2,11 @@
     Python libary that utilizes Tealium Collect
 '''
 import requests
-import uuid
-import pickle
-import os
 import sys
 from random import randint
 import time
 import json
 import gzip
-
 
 class Tealium(object):
 
@@ -30,9 +26,8 @@ class Tealium(object):
     TRACK_DATA = "data"
     TRACK_TITLE = "title"
 
-    LIBRARY_VERSION = "1.3.0"
+    LIBRARY_VERSION = "2.0.0"
 
-    sessionId = ""
     platformversion = ""
     if sys.version_info[:3] >= (3, 0):
         platformversion = 3.0
@@ -42,18 +37,13 @@ class Tealium(object):
     T_BASE_URL = 'https://collect.tealiumiq.com/event'
 
     '''
-        Returns an instance of a Tealium object, path is optional.
-
-        "path" is used for persistence
+        Returns an instance of a Tealium object.
     '''
 
-    def __init__(self, account, profile, environment=None, path=None, datasource=None):
+    def __init__(self, account, profile, environment=None, datasource=None):
         self.account = account
         self.profile = profile
         self.datasource = datasource
-        self.path = path
-        self.uuid = self.getUUIDandSave()
-        self.sessionId = self.resetSessionId()
         self.environment = environment
 
     def generateRandomNumber(self):
@@ -67,24 +57,6 @@ class Tealium(object):
 
         return int(time.time())
 
-    def getUUIDandSave(self):
-        '''
-            Builds and saves a unique identifer for each instance.
-        '''
-
-        if self.path is None:
-            self.path = os.path.join(os.getcwd(), 'tealium_vid')
-        if not os.path.exists(self.path):
-            path = open(self.path, 'wb')
-            UUID = str(uuid.uuid1()).replace("-", "")
-            pickle.dump(UUID, path, protocol=2)
-            path.close()
-        else:
-            afile = open(self.path, 'rb')
-            UUID = pickle.load(afile)
-            afile.close()
-        return UUID
-
     def isValidEventType(self, eventType):
         eventTypeArray = [self.EVENT_TYPE_VIEW,
                           self.EVENT_TYPE_DERIVED,
@@ -92,15 +64,6 @@ class Tealium(object):
                           self.EVENT_TYPE_CONVERSION,
                           self.EVENT_TYPE_INTERACTION]
         return (eventType in eventTypeArray)
-
-    def resetSessionId(self):
-        '''
-            Used to reset tealium_session_id as a data source.
-        '''
-
-        global sessionId
-        sessionId = int(round(time.time() * 1000))
-        return sessionId
 
     def trackEvent(self, title, eventtype=None, data={}, callback=None):
 
@@ -140,11 +103,9 @@ class Tealium(object):
         body = {
             'tealium_account': self.account,
             'tealium_profile': self.profile,
-            'tealium_vid': self.uuid,
             'tealium_random': randomNumber,
             'event_name': title,
             'tealium_timestamp_epoch': self.generateTimeStamp(),
-            'tealium_session_id': sessionId,
             'tealium_event': title,
             'tealium_event_type': eventType,
             'platform_name': 'python',
@@ -153,14 +114,10 @@ class Tealium(object):
             'platform_version': self.platformversion
         }
 
-        if self.environment is None:
-            pass
-        else:
+        if self.environment is not None:
             body['tealium_environment'] = self.environment
 
-        if self.datasource is None:
-            pass
-        else:
+        if self.datasource is not None:
             body['tealium_datasource'] = self.datasource
         
         if data is not None:
