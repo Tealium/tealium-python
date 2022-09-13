@@ -178,15 +178,15 @@ class Tealium(object):
         if callback is None:
             return
         infoDict = {"encoded-url": TRACK_URL, 'request-data': body}
-        error = r.raise_for_status()
+        error = None
 
-        if r.status_code != 200:
-            callback(infoDict, False, error)
-            return
+        try:
+            r.raise_for_status()
+        except Exception as e:
+            error = e
         infoDict["response_headers"] = r.headers
 
-        if 'X-error' in r.headers:
-            callback(infoDict, False, error)
-            return
+        if error is None and 'X-Error' in r.headers:
+            error = r.headers['X-Error']
 
-        callback(infoDict, True)
+        callback(infoDict, error is None, error)
