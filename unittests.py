@@ -18,15 +18,12 @@ class TestTrackCalls(unittest.TestCase):
                                   "tealium_random",
                                   "event_name",
                                   "tealium_timestamp_epoch",
-                                  "tealium_session_id",
-                                  "tealium_visitor_id",
                                   "tealium_event",
                                   "tealium_event_type"]
 
-        sentURL = info['encoded-url']
+        sentData = info['request-data']
         for i in expectedDataSourceKeys:
-            self.assertIn(i + '=', sentURL, 'expected key {} not in sent '
-                                      'url {}'.format(i, sentURL))
+            self.assertIn(i, sentData, 'expected key {} not in sent data')
 
     def test_trackEvent(self):
         t = Tealium('tealiummobile', 'demo', 'dev', datasource='unittest')
@@ -49,11 +46,9 @@ class TestTrackCalls(unittest.TestCase):
             numberArray.append(s)
         t = None
 
-    def testUUID(self):
+    def testEventEndpoint(self):
         t = Tealium('tealiummobile', 'demo', 'dev', datasource='unittest')
-        uuid = t.getUUIDandSave()
-        self.assertEqual(uuid, t.uuid, '{} is not expected {}'.format(uuid,
-                                                                      t.uuid))
+        self.assertTrue(t.T_BASE_URL.startswith('https://collect.tealiumiq.com/event'))
         t = None
 
 if __name__ == '__main__':

@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name='tealium',
   packages=['tealium'],
-  version='1.2.0',
+  version='2.0.0',
   description='Tealium Libary',
   author='Tealium Integrations Team',
   author_email='integrations.tealium@tealium.com',
