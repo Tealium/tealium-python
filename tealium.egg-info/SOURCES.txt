@@ -1,7 +1,8 @@
+LICENSE.txt
+README.md
 setup.cfg
 setup.py
 tealium/__init__.py
-tealium/unittests.py
 tealium.egg-info/PKG-INFO
 tealium.egg-info/SOURCES.txt
 tealium.egg-info/dependency_links.txt
